@@ -1,24 +1,28 @@
-module.exports = Handler;
+var Handler = {};
 
-function Handler() {
+Handler.echo = function(req, res) {
+	console.log("echo");
+	res.status(500).send("connection error");
 }
 
-Handler.prototype.inflate = function(da) {
-	return function(req, res, next) {
-	    var url = req.query.url;
-	    da.invoke("select * from Mappings", function(err, rows) {
-	    	console.log("inflate");
+Handler.inflate = function(da) {
+	return function(req, res) {
+	    var url = req.params.url;
+	    da.inflate(url, function(err, rows) {
+	    	console.log("inflate: "+url);
 	    	res.send("inflate");
 	    });
 	};
 }
 
-Handler.prototype.deflate = function(da) {
-	return function(req, res, next) {
-	    var url = req.query.url;
-	    da.invoke("select * from Mappings", function(err, rows) {
-	    	console.log("deflate");
+Handler.deflate = function(da) {
+	return function(req, res) {
+	    var url = req.params.url;
+	    da.deflate(url, function(err, rows) {
+	    	console.log("deflate: "+url);
 	    	res.send("deflate");
 	    });
 	};
 }
+
+module.exports = Handler;
