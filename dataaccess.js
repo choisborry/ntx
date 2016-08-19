@@ -1,4 +1,5 @@
 var mysql = require("mysql");
+var base64 = require("base-64");
 var urlhash = require("./urlhash.js");
 
 module.exports = DataAccess;
@@ -13,9 +14,10 @@ function DataAccess(config) {
 	if (this.pool == null)
 		console.log("createPool failed");
 }
-DataAccess.prototype.inflate = function(url, cb) {
-	var hashIndex = urlhash.url2index(url);
-	var sql = "SELECT URL From Mappings WHERE Index="+hashIndex;
+DataAccess.prototype.inflate = function(shortUrl, cb) {
+	var hashIndex = urlhash.shorturl2index(shortUrl);
+	var sql = "SELECT URL From Mappings WHERE `Index`="+hashIndex;
+	console.log(sql);
 	
 	this.pool.getConnection(function(err, conn) {
 		if (err) {
@@ -27,30 +29,58 @@ DataAccess.prototype.inflate = function(url, cb) {
 				cb(err, null);
 			}
 			else {
-				cb(err, result);
+				var longUrl;
+				if (result.length > 0) {
+					longUrl = base64.decode(result[0].URL);
+				}
+				else {
+					longUrl = "URL not found";
+				}
+				cb(err, longUrl);
 			}
 			conn.release();
 		})
 	})
 }
 
-DataAccess.prototype.deflate = function(url, cb) {
+DataAccess.prototype.deflate = function(longUrl, cb) {
+	var encUrl = base64.encode(longUrl);
+	var lookup = "SELECT `Index` FROM Mappings Where URL='"+encUrl+"'";
     var sql = "INSERT INTO Mappings SET ?";
-    var params = {URL: url};
+    var params = {URL: encUrl};
 
 	this.pool.getConnection(function(err, conn){
 		if (err) {
 			console.log(err);
 			return;
 		}
-		conn.query(sql, params, function(err, result) {
-			if (err)
+		conn.query(lookup, function(err, result) {
+			if (err) {
+				console.log(err);
 				cb(err, null);
+			}
 			else {
-				var index = result.insertId;
-				console.log(result.insertId);
-				var shortUrl = urlhash.index2url(index);
-				cb(err, shortUrl);
+				console.log("select:"+result);
+				if (result.length == 0) {
+					conn.query(sql, params, function(err, result) {
+						if (err) {
+							console.log(err);
+							cb(err, null);
+						}
+						else {
+							console.log("insert:"+result);
+							var index = result.insertId;
+							console.log(result.insertId);
+							var shortUrl = urlhash.index2shorturl(index);
+							cb(err, shortUrl);
+						}
+					})
+				}
+				else {
+					var index = result[0].Index;
+					var shortUrl = urlhash.index2shorturl(index);
+					cb(err, shortUrl);
+				}
 			}
 			conn.release();
 		})

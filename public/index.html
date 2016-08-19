@@ -8,10 +8,13 @@
 	  <div>
 	    <h3>Enter Your URL.</h3>
 		<div>
-		    <input type="text" id="longUrl" name="longUrl" value="" placeholder="Enter your URL here"/>
-			<button type="button" id="btnSubmit">Shrink URL</button>
+		    <textarea rows="4" cols="100" id="longURL" name="longURL" value="" placeholder="Enter your URL here">
+		    </textarea>
+			<button type="button" id="btnDeflate">Deflate URL</button>
 		</div>
-		    <input type="text" id="shortUrl" name="shortUrl" value="" hidden="true"/>
+		    <textarea rows="1" cols="100" id="shortURL" name="shortURL" value="">
+		    </textarea>
+			<button type="button" id="btnInflate">Inflate URL</button>
 		<div>
 		</div>
 	  </div>
@@ -20,14 +23,29 @@
 	  <script src='js/main.js'></script>
 	  <script>
 	    $(function(){
-	      $("#btnSubmit").click(function(e) {
-		      //console.log($("#longUrl"));
-	    	  var longURL = $("#longUrl").val();
+	  	  $("#longURL").val("");
+	  	  $("#shortURL").val("");
+	  	  
+	      $("#btnDeflate").click(function(e) {
+		      //console.log($("#longURL"));
+	    	  var longURL = $("#longURL").val();
 	    	  var encodedUrl = encodeURIComponent(longURL);
 	    	  console.log("longURL="+encodedUrl);
+	    	  deflate(encodedUrl, function(err, result) {
+	    	  	  $("#longURL").val("");
+		    	  $("#shortURL").val(result);
+		    	  $("#shortURL").show();
+		  	  });
+	      });
+	      $("#btnInflate").click(function(e) {
+		      //console.log($("#longUrl"));
+	    	  var shortURL = $("#shortURL").val();
+	    	  var encodedUrl = encodeURIComponent(shortURL);
+	    	  console.log("shortURL="+encodedUrl);
 	    	  inflate(encodedUrl, function(err, result) {
-		    	  $("#shortUrl").val(result);
-		    	  $("#shortUrl").show();
+	    	  	  $("#shortURL").val("");
+		    	  $("#longURL").val(result);
+		    	  //$("#shortURL").show();
 		  	  });
 	      });
 	    });

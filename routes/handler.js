@@ -8,9 +8,10 @@ Handler.echo = function(req, res) {
 Handler.inflate = function(da) {
 	return function(req, res) {
 	    var url = req.params.url;
-	    da.inflate(url, function(err, rows) {
-	    	console.log("inflate: "+url);
-	    	res.send("inflate");
+	    console.log("handler.inflate: "+url);
+	    da.inflate(url, function(err, result) {
+	    	console.log("inflate: "+result);
+	    	res.send("inflate: "+result);
 	    });
 	};
 }
@@ -18,9 +19,10 @@ Handler.inflate = function(da) {
 Handler.deflate = function(da) {
 	return function(req, res) {
 	    var url = req.params.url;
-	    da.deflate(url, function(err, rows) {
-	    	console.log("deflate: "+url);
-	    	res.send("deflate");
+	    console.log("handler.deflate: "+url);
+	    da.deflate(url, function(err, result) {
+	    	console.log("deflate: "+result);
+	    	res.send("deflate: "+result);
 	    });
 	};
 }

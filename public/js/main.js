@@ -1,4 +1,4 @@
-const base_url = "http://localhost:3000";
+const base_url = "http://localhost:2999";
 
 function httpRequest(url, cb) {
     var xmlhttp = new XMLHttpRequest();
@@ -16,6 +16,7 @@ function httpRequest(url, cb) {
 
 function inflate(data, cb) {
     var url = base_url+"/inflate/"+data;
+    console.log("main.js:inflate:"+url)
     httpRequest(url, function(err, result) {
         cb(err, result);
     });
