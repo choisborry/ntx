@@ -26,9 +26,15 @@ var da = new DataAccess(config.mysql);
 var app = module.exports = express();
 var server = http.createServer(app);
 
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+};
+
 // configuration
 app.set('respath', __dirname + '/public');
 app.use(express.static(__dirname + '/public'));
+app.use(allowCrossDomain);
 
 app.use('/echo', handler.echo);
 app.use('/inflate/:url', handler.inflate(da));
