@@ -6,16 +6,19 @@
   </head>
   <body >
 	  <div>
-	    <h3>Enter Your URL.</h3>
+	    <h1>Shrink your URL or Expand it.</h1>
 		<div>
-		    <textarea rows="4" cols="100" id="longURL" name="longURL" value="" placeholder="Enter your URL here">
+		    <textarea rows="4" cols="50" id="longURL" name="longURL" value="" placeholder="Enter your URL to shrink here">
 		    </textarea>
-			<button type="button" id="btnDeflate">Shrink URL</button>
+			<button type="button" id="btnDeflate" style="font-size:16px">Shrink URL</button>
 		</div>
-		    <input type="text" size="100" id="shortURL" name="shortURL" value="">
-		    </textarea>
-			<button type="button" id="btnInflate">Expand to original URL</button>
+		<br>
+		<br>
 		<div>
+<!-- 		    <input type="text" size="50" id="shortURL" name="shortURL" value=""> -->
+		    <textarea rows="1" cols="50" id="shortURL" name="shortURL" value="" placeholder="URL to expand, start with http://ntx.co/">
+		    </textarea>
+			<button type="button" id="btnInflate" style="font-size:16px">Expand to original URL</button>
 		</div>
 	  </div>
       <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>

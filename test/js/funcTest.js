@@ -84,7 +84,7 @@ describe("[UrlShorten.Function]", function() {
         	});
         })
         it("shrink max length url", function(done) {
-        	var orgUrl = randomUrl(MAX_URLLENGTH);
+        	var orgUrl = randomUrl(MAX_URL_LENGTH);
         	request.deflate(orgUrl, function(err, result) {
         		assert.equal(err, false, 'deflate: return error - '+result);
         		done();

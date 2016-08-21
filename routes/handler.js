@@ -13,7 +13,7 @@ Handler.echo = function(req, res) {
 Handler.inflate = function(da) {
 	return function(req, res) {
 	    var url = req.params.url;
-	    if (url.startsWith(shorturl_base) == false) {
+	    if (url.indexOf(shorturl_base) != 0) {
 	    	console.log("Handler.inflate: invalid prefix: "+url);
 	    	res.status(400).send("");
 	    	return;
