@@ -17,7 +17,7 @@ function DataAccess(config) {
 DataAccess.prototype.inflate = function(shortUrl, cb) {
 	var hashIndex = urlhash.shorturl2index(shortUrl);
 	var sql = "SELECT URL From Mappings WHERE `Index`="+hashIndex;
-	console.log(sql);
+	//console.log(sql);
 	
 	this.pool.getConnection(function(err, conn) {
 		if (err) {
@@ -34,7 +34,7 @@ DataAccess.prototype.inflate = function(shortUrl, cb) {
 					longUrl = base64.decode(result[0].URL);
 				}
 				else {
-					longUrl = "URL not found";
+					longUrl = "";
 				}
 				cb(err, longUrl);
 			}
@@ -60,7 +60,6 @@ DataAccess.prototype.deflate = function(longUrl, cb) {
 				cb(err, null);
 			}
 			else {
-				console.log("select:"+result);
 				if (result.length == 0) {
 					conn.query(sql, params, function(err, result) {
 						if (err) {
@@ -68,9 +67,8 @@ DataAccess.prototype.deflate = function(longUrl, cb) {
 							cb(err, null);
 						}
 						else {
-							console.log("insert:"+result);
 							var index = result.insertId;
-							console.log(result.insertId);
+							console.log("new entry: "+result.insertId);
 							var shortUrl = urlhash.index2shorturl(index);
 							cb(err, shortUrl);
 						}
@@ -78,6 +76,7 @@ DataAccess.prototype.deflate = function(longUrl, cb) {
 				}
 				else {
 					var index = result[0].Index;
+					console.log("lookup entry: "+index);
 					var shortUrl = urlhash.index2shorturl(index);
 					cb(err, shortUrl);
 				}

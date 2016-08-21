@@ -10,11 +10,11 @@
 		<div>
 		    <textarea rows="4" cols="100" id="longURL" name="longURL" value="" placeholder="Enter your URL here">
 		    </textarea>
-			<button type="button" id="btnDeflate">Deflate URL</button>
+			<button type="button" id="btnDeflate">Shrink URL</button>
 		</div>
-		    <textarea rows="1" cols="100" id="shortURL" name="shortURL" value="">
+		    <input type="text" size="100" id="shortURL" name="shortURL" value="">
 		    </textarea>
-			<button type="button" id="btnInflate">Inflate URL</button>
+			<button type="button" id="btnInflate">Expand to original URL</button>
 		<div>
 		</div>
 	  </div>
@@ -29,6 +29,10 @@
 	      $("#btnDeflate").click(function(e) {
 		      //console.log($("#longURL"));
 	    	  var longURL = $("#longURL").val();
+	    	  if (longURL == "") {
+		    	  alert("Enter your URL first.");
+		    	  return;
+	    	  }
 	    	  var encodedUrl = encodeURIComponent(longURL);
 	    	  console.log("longURL="+encodedUrl);
 	    	  deflate(encodedUrl, function(err, result) {
@@ -40,6 +44,10 @@
 	      $("#btnInflate").click(function(e) {
 		      //console.log($("#longUrl"));
 	    	  var shortURL = $("#shortURL").val();
+	    	  if (shortURL == "") {
+		    	  alert("Enter your short URL first.");
+		    	  return;
+	    	  }
 	    	  var encodedUrl = encodeURIComponent(shortURL);
 	    	  console.log("shortURL="+encodedUrl);
 	    	  inflate(encodedUrl, function(err, result) {
