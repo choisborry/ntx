@@ -1,4 +1,4 @@
-const base_url = "http://localhost:2999";
+const base_url = "http://54.205.32.51:2999";
 
 function httpRequest(url, cb) {
     var xmlhttp = new XMLHttpRequest();
